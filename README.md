@@ -79,7 +79,7 @@ var worker = new resqueInfo.ResqueWorker(resqueEnvironment, workerHost, workerPi
 `ResqueJob` represents a queued Resque job. It differs from the other classes in that it does not require a `ResqueEnvironment` instance to be created; it is simply a set of data.
 
 ```javascript
-var job = new resqueInfo.ResqueJob(
+var job = new resqueInfo.ResqueJob(properties);
 ```
 
 ### Properties
@@ -103,7 +103,7 @@ Failed jobs have the following properties:
  * `exception` - If the job has failed, the name of the exception class that triggered the failure. `null` if the job has not failed.
  * `error` - An object representation of the error.
  * `backtrace` - An array of strings representing the backtrace of the error.
- * `worker` - A `ResqueWorker` representing the worker that processed this job.
+ * `worker` - A string representation of the worker that processed the job, in the format: `host:pid:queues`.
 
 ### Methods
 
