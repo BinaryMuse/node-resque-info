@@ -1,0 +1,31 @@
+{
+  "name": "resque-info",
+  "version": "0.0.0",
+  "description": "Get information about your Resque infrastructure",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --ui bdd --recursive --compilers coffee:coffee-script ./spec/*_spec.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/BinaryMuse/node-resque-info.git"
+  },
+  "keywords": [
+    "resque"
+  ],
+  "author": "Brandon Tilley <brandon@brandontilley.com>",
+  "license": "MIT",
+  "gitHead": "fc4a75165bc3b0570bc38e4de9d37011e58b6175",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "redis": "~0.8.2",
+    "coffee-script": "~1.6.2"
+  },
+  "devDependencies": {
+    "mocha": "~1.9.0",
+    "hiredis": "~0.1.15",
+    "sinon-chai": "~2.3.1",
+    "chai": "~1.5.0",
+    "sinon": "~1.6.0"
+  }
+}

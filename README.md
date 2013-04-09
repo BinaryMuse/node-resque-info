@@ -28,9 +28,17 @@ All API methods that take a `callback` parameter is in the traditional Node.js `
 var resqueInfo = require('resque-info');
 var redisPort = 6379;
 var redisHost = 'localhost';
+var redisDbNum = 0
 var resqueNamespace = 'resque'; // Resque's default namespace
-var env = new resqueInfo.ResqueEnvironment(redisPort, redisHost, resqueNamesapce);
+var env = new resqueInfo.ResqueEnvironment(resqueNamespace, redisPort, redisHost, redisDbNum);
 ```
+
+All arguments to the constructor are optional; the defaults are as follows:
+
+ * `namespace` - `'resque'`, the default namespace set by the Resque gem
+ * `port` - `6379`, the default Redis port
+ * `host` - `'localhost'`
+ * `dbnum` - `0`
 
 ### Methods
 
