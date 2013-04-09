@@ -64,7 +64,7 @@ var worker = new resqueInfo.ResqueWorker(resqueEnvironment, workerHost, workerPi
 
 ### Class Methods
 
- * `.fromString(resqueEnvironment, string)` - Create a `ResqueWorker` instance from a `ResqueEnvironment` and a string representation of a worker, formatted as: `host:pid:queue`.
+ * `.fromString(resqueEnvironment, string)` - Create a `ResqueWorker` instance from a `ResqueEnvironment` and a string representation of a worker, formatted as: `host:pid:queues`.
 
 ### Methods
 
