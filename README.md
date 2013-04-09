@@ -62,11 +62,16 @@ var worker = new resqueInfo.ResqueWorker(resqueEnvironment, workerHost, workerPi
 
 `workerQueues` can either be a string representing a list of queues to process (`"mailer,chores"`), or an array of strings, where each string is a queue (`["mailer", "chores"]`).
 
+### Class Methods
+
+ * `.fromString(resqueEnvironment, string)` - Create a `ResqueWorker` instance from a `ResqueEnvironment` and a string representation of a worker, formatted as: `host:pid:queue`.
+
 ### Methods
 
  * `#processed(callback)` - Get the number of jobs this worker has processed.
  * `#failed(callback)` - Get the number of jobs this worker has failed to process.
  * `#processing(callback)` - Get a `ResqueJob` representing the job being currently processed, or `null` if none.
+ * `#toString()` - Get a string representation of the worker, formatted as: `host:pid:queues`
 
 `ResqueJob`
 -----------
@@ -79,10 +84,27 @@ var job = new resqueInfo.ResqueJob(
 
 ### Properties
 
+All `ResqueJob`s contain the following properties:
+
  * `queue` - The name of the queue the job was queued on.
- * `run_at` - A `Date` representing the date a worker started processing the job, or `null` if the job has yet to be processed.
  * `payload` - An object representing the job's playload:
    * `class` - The name of the class the Job was queued from.
    * `args` - An array of arguments passed to the job.
 
 If you use plugins or gems to add additional information to your Resque job paylods, those properties will also exist on the `playload` property.
+
+Jobs that have yet to run or are being processed have the following properties:
+
+ * `run_at` - A `Date` representing the date a worker started processing the job, or `null` if the job has yet to be processed.
+
+Failed jobs have the following properties:
+
+ * `failed_at` - A `Date` representing the date that the job failed, or `null` if the job has yet to fail.
+ * `exception` - If the job has failed, the name of the exception class that triggered the failure. `null` if the job has not failed.
+ * `error` - An object representation of the error.
+ * `backtrace` - An array of strings representing the backtrace of the error.
+ * `worker` - A `ResqueWorker` representing the worker that processed this job.
+
+### Methods
+
+ * `#status()` - Either `'waiting'`, `'processing'`, or `'failed'`.
