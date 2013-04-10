@@ -47,6 +47,8 @@ All arguments to the constructor are optional; the defaults are as follows:
 
 ### Methods
 
+ * `#processed(callback)` - Get the total number of jobs processed by Resque.
+ * `#failed(callback)` - Get the total number of failed jobs.
  * `#queues(callback)` - Get an array of `ResqueQueue`s that represent all the current Resque queues.
  * `#workers(callback)` - Get an array of `ResqueWorker`s that represent all the current Resque workers.
 
