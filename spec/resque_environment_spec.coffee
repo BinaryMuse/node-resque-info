@@ -54,14 +54,20 @@ describe 'ResqueEnvironment', ->
 
   describe '#queues', ->
     it 'returns an array of all the queues', (done) ->
-      @redis.smembers = sinon.expectation.create('smembers').once().withArgs('resque:queues').yields null, ['mailer', 'chores', 'opengraph']
+      queueNames = ['mailer', 'chores', 'opengraph']
+      @redis.smembers = sinon.expectation.create('smembers').once().withArgs('resque:queues').yields null, queueNames
       @resque.queues (err, queues) =>
-        queues.should.eql ['mailer', 'chores', 'opengraph']
+        for queue, index in queues
+          queue.name.should.eql queueNames[index]
+          queue.environment.should.equal @resque
         done(err)
 
   describe '#workers', ->
     it 'returns an array of all the workers', (done) ->
-      @redis.smembers = sinon.expectation.create('smembers').once().withArgs('resque:workers').yields null, ['production-resque-1.host:1234:*', 'production-resque-1.host:5678:chores']
+      workerNames = ['production-resque-1.host:1234:*', 'production-resque-1.host:5678:chores']
+      @redis.smembers = sinon.expectation.create('smembers').once().withArgs('resque:workers').yields null, workerNames
       @resque.workers (err, workers) =>
-        workers.should.eql ['production-resque-1.host:1234:*', 'production-resque-1.host:5678:chores']
+        for worker, index in workers
+          worker.toString().should.eql workerNames[index]
+          worker.environment.should.equal @resque
         done(err)
