@@ -75,12 +75,19 @@ var worker = new resqueInfo.ResqueWorker(resqueEnvironment, workerHost, workerPi
 
 `workerQueues` can either be a string representing a list of queues to process (`"mailer,chores"`), or an array of strings, where each string is a queue (`["mailer", "chores"]`).
 
+### Properties
+
+ * `host` - The host the worker is workig on.
+ * `pid` - The PID of the worker process.
+ * `queues` - An array of the queues this worker is processing, e.g. `['mailer', 'chores']`.
+
 ### Class Methods
 
  * `.fromString(resqueEnvironment, string)` - Create a `ResqueWorker` instance from a `ResqueEnvironment` and a string representation of a worker, formatted as: `host:pid:queues`.
 
 ### Methods
 
+ * `#started(callback)` - Get the `Date` this worker was started.
  * `#processed(callback)` - Get the number of jobs this worker has processed.
  * `#failed(callback)` - Get the number of jobs this worker has failed to process.
  * `#processing(callback)` - Get a `ResqueJob` representing the job being currently processed, or `null` if none.
