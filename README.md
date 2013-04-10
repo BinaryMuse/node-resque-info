@@ -98,7 +98,7 @@ var worker = new resqueInfo.ResqueWorker(resqueEnvironment, workerHost, workerPi
 `ResqueJob`
 -----------
 
-`ResqueJob` represents a queued Resque job. It differs from the other classes in that it does not require a `ResqueEnvironment` instance to be created; it is simply a set of data.
+`ResqueJob` represents a Resque job that is waiting in a queue to be processed, being processed by a worker, or has failed during processing. It differs from the other classes in that it does not require a `ResqueEnvironment` instance to be created; it is simply a set of data.
 
 ```javascript
 var job = new resqueInfo.ResqueJob(properties);
