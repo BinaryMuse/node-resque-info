@@ -1,3 +1,8 @@
+node-resque-info
+================
+
+[![Build Status](https://travis-ci.org/BinaryMuse/node-resque-info.png?branch=master)](https://travis-ci.org/BinaryMuse/node-resque-info)
+
 node-resque-info is a Node.js library that you can use to get information about a Resque instance.
 
 (Note: project is under construction)
