@@ -23,7 +23,9 @@ describe 'ResqueQueue', ->
   describe '#jobs', ->
     it 'returns all the jobs in the queue', (done) ->
       done()
+
     it 'returns the first x jobs in the queue', (done) ->
       done()
+
     it 'returns a subset of jobs in the queue', (done) ->
       done()

@@ -64,11 +64,27 @@ describe 'ResqueWorker', ->
   describe '#processing', ->
     describe 'when the worker is processing a job', ->
       it 'returns the job being processed', (done) ->
-        done()
+        expectedJob =
+          queue: 'apns'
+          run_at: '2013/04/11 16:53:25 UTC'
+          payload:
+            class: 'ApnsNotifier'
+            args: [119]
+            caller_nid: 'Learnist-production-29b95c3404d9683273b7aba95e9d0ac047530250-WEB-bf9a54832ba21e2c2856'
+
+        jobString = "{\"queue\":\"apns\",\"run_at\":\"2013/04/11 16:53:25 UTC\",\"payload\":{\"class\":\"ApnsNotifier\",\"args\":[119],\"caller_nid\":\"Learnist-production-29b95c3404d9683273b7aba95e9d0ac047530250-WEB-bf9a54832ba21e2c2856\"}}"
+
+        @redis.get = sinon.expectation.create('get').once().withArgs("resque:worker:localhost:1234:mailer,chores").yields null, jobString
+        @worker.processing (err, job) =>
+          job.should.deep.eql expectedJob
+          done(err)
 
     describe 'when the worker is not processing a job', ->
       it 'returns null', (done) ->
-        done()
+        @redis.get = sinon.expectation.create('get').once().withArgs("resque:worker:localhost:1234:mailer,chores").yields null, null
+        @worker.processing (err, job) =>
+          should.not.exist(job)
+          done(err)
 
   describe '#toString', ->
     it 'returns a string representation of the worker', ->
