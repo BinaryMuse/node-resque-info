@@ -31,6 +31,22 @@ describe 'ResqueWorker', ->
       worker.pid.should.eql 1234
       worker.queues.should.eql ['mailer', 'chores']
 
+  describe '#started', ->
+    describe 'when the worker is running', ->
+      it 'returns the Date the worker was started', (done) ->
+        dateString = '2013-04-10 23:43:39 +0000'
+        @redis.get = sinon.expectation.create('get').once().withArgs('resque:worker:localhost:1234:mailer,chores:started').yields null, dateString
+        @worker.started (err, date) =>
+          date.should.eql new Date(dateString)
+          done(err)
+
+    describe 'when the worker is not running', ->
+      it 'returns null', (done) ->
+        @redis.get = sinon.expectation.create('get').once().withArgs('resque:worker:localhost:1234:mailer,chores:started').yields null, null
+        @worker.started (err, date) =>
+          should.not.exist(date)
+          done(err)
+
   describe '#processed', ->
     describe 'when jobs have been processed by the worker', =>
       it 'returns the number of jobs processed by the worker', (done) ->

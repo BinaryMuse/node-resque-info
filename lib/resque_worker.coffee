@@ -22,3 +22,12 @@ module.exports = class ResqueWorker
 
   toString: =>
     "#{@host}:#{@pid}:#{@queues.join(',')}"
+
+  started: (callback) =>
+    @environment.redis.get @environment.key("worker:#{@toString()}:started"), (err, response) =>
+      if err
+        callback(err, response)
+      else if !response?
+        callback(err, null)
+      else
+        callback(err, new Date(response))
