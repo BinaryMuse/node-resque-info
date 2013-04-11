@@ -21,11 +21,43 @@ describe 'ResqueQueue', ->
         done(err)
 
   describe '#jobs', ->
-    it 'returns all the jobs in the queue', (done) ->
-      done()
+    describe 'when there are jobs in the queue', ->
+      beforeEach ->
+        @jobStrings = [
+          "{\"job\": 1}"
+          "{\"job\": 2}"
+          "{\"job\": 3}"
+          "{\"job\": 4}"
+          "{\"job\": 5}"
+          "{\"job\": 6}"
+          "{\"job\": 7}"
+          "{\"job\": 8}"
+          "{\"job\": 9}"
+          "{\"job\": 10}"
+          "{\"job\": 11}"
+        ]
 
-    it 'returns the first x jobs in the queue', (done) ->
-      done()
+      it 'returns all the jobs in the queue', (done) ->
+        @redis.lrange = sinon.expectation.create('lrange').once().withArgs('resque:queue:mailer', 0, -1).yields null, @jobStrings
+        @queue.jobs 0, -1, (err, jobs) =>
+          jobs.should.deep.eql @jobStrings.map JSON.parse
+          done(err)
 
-    it 'returns a subset of jobs in the queue', (done) ->
-      done()
+      it 'returns the first x jobs in the queue', (done) ->
+        @redis.lrange = sinon.expectation.create('lrange').once().withArgs('resque:queue:mailer', 0, 4).yields null, @jobStrings[0..4]
+        @queue.jobs 0, 5, (err, jobs) =>
+          jobs.should.deep.eql @jobStrings[0..4].map JSON.parse
+          done(err)
+
+      it 'returns a subset of jobs in the queue', (done) ->
+        @redis.lrange = sinon.expectation.create('lrange').once().withArgs('resque:queue:mailer', 5, 9).yields null, @jobStrings[5..9]
+        @queue.jobs 5, 5, (err, jobs) =>
+          jobs.should.deep.eql @jobStrings[5..9].map JSON.parse
+          done(err)
+
+    describe 'when there are no jobs in the queue', ->
+      it 'returns an empty array', (done) ->
+        @redis.lrange = sinon.expectation.create('lrange').once().yields null, []
+        @queue.jobs 0, -1, (err, jobs) =>
+          jobs.should.eql []
+          done(err)

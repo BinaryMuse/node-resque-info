@@ -64,7 +64,7 @@ var queue = new resqueInfo.ResqueQueue(resqueEnvironment, queueName);
 ### Methods
 
  * `#length(callback)` - Get the current length of the queue.
- * `#jobs([start], [end], callback)` - Get an array of `ResqueJob`s that represent jobs in the queue. If only `callback` is provided, `start` and `end` are assumed to be `0` and `-1`, respectively. If only `end` and `callback` are provided, `start` is assumed to be `0`. To return all jobs, `start` and `end` should be `0` and `-1`, respectively.
+ * `#jobs(start, count, callback)` - Get an array of objects that represent jobs in the queue. To return all jobs, `start` and `count` should be `0` and `-1`, respectively. Returns an empty array if there are no jobs in the queue.
 
 `ResqueWorker`
 --------------
@@ -92,36 +92,32 @@ var worker = new resqueInfo.ResqueWorker(resqueEnvironment, workerHost, workerPi
  * `#started(callback)` - Get the `Date` this worker was started.
  * `#processed(callback)` - Get the number of jobs this worker has processed.
  * `#failed(callback)` - Get the number of jobs this worker has failed to process.
- * `#processing(callback)` - Get a `ResqueJob` representing the job being currently processed, or `null` if none.
+ * `#processing(callback)` - Get an object representing the job being currently processed, or `null` if none.
  * `#toString()` - Get a string representation of the worker, formatted as: `host:pid:queues`
 
-`ResqueJob`
------------
+Jobs
+----
 
-`ResqueJob` represents a Resque job that is waiting in a queue to be processed, being processed by a worker, or has failed during processing. It differs from the other classes in that it does not require a `ResqueEnvironment` instance to be created; it is simply a set of data.
-
-```javascript
-var job = new resqueInfo.ResqueJob(properties);
-```
+Resque jobs are represented by plain JavaScript objects.
 
 ### Properties
 
-All `ResqueJob`s contain the following properties:
+All jobs contain the following properties:
 
  * `queue` - The name of the queue the job was queued on.
- * `payload` - An object representing the job's playload:
+ * `payload` - An object representing the job's payload:
    * `class` - The name of the class the Job was queued from.
    * `args` - An array of arguments passed to the job.
 
-If you use plugins or gems to add additional information to your Resque job paylods, those properties will also exist on the `playload` property.
+If you use plugins or gems to add additional information to your Resque job paylods, those properties will also exist on the `payload` property.
 
 Jobs that have yet to run or are being processed have the following properties:
 
- * `run_at` - A `Date` representing the date a worker started processing the job, or `null` if the job has yet to be processed.
+ * `run_at` - A string timestamp of the date a worker started processing the job, or `null` if the job has yet to be processed.
 
 Failed jobs have the following properties:
 
- * `failed_at` - A `Date` representing the date that the job failed, or `null` if the job has yet to fail.
+ * `failed_at` - A string timestamp of the date that the job failed, or `null` if the job has yet to fail.
  * `exception` - If the job has failed, the name of the exception class that triggered the failure. `null` if the job has not failed.
  * `error` - An object representation of the error.
  * `backtrace` - An array of strings representing the backtrace of the error.
